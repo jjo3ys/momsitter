@@ -1,4 +1,5 @@
 *.csv
 *.xlsx
+*.exe
 !classification_with_improve_col.csv
 /momsitter
