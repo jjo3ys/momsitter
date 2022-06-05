@@ -51,6 +51,7 @@ def lgbm(train_x, train_y, eval_set, test_x, test_y):
     binary_loss.set(ylabel='binary_logloss')
     binary_loss.figure.savefig("applyStatus_model_lgbm.png")
     print("lightGBM accuracy: {}%".format(round(accuracy, 3)*100))
+    
     # fig, ax = plt.subplots(figsize=(10, 12))
 
     # impt = plot_importance(lgb, ax=ax)
@@ -72,17 +73,7 @@ def xgb_boost(train_x, train_y, eval_set, test_x, test_y):
     import xgboost as xgb
     from xgboost import plot_importance
 
-    # params = {'max_depth' : 2,
-    #      'objective' : 'binary:logistic',
-    #      'eval_metric' : 'binary',
-    #      'early_stoppings' : 100 }
-
-    # xgb_train = xgb.DMatrix(data=train_x, label=train_y)
-    # xgb_val = xgb.DMatrix(data=val_x, label=val_y)
-    # xgb_test = xgb.DMatrix(data=test_x, label=test_y)
-    # xgb_model = xgb.train(params=params, dtrain=xgb_train, num_boost_round=50, evals=[(xgb_train, 'train'), (xgb_val, 'eval')])
-    # pred = xgb_model.predict(xgb_test)
-    loss_func = 'logloss'
+    loss_func = 'error'
     model = xgb.XGBClassifier(n_estimators=50, max_depth=2)
     model.fit(train_x, train_y, eval_set=[(train_x, train_y), (val_x, val_y)], eval_metric=loss_func, verbose=False)
     pred = model.predict(test_x)
@@ -97,15 +88,6 @@ def xgb_boost(train_x, train_y, eval_set, test_x, test_y):
     ax.plot(x_axis, results['validation_1'][loss_func], label='val')
     ax.legend()
     plt.savefig("applyStatus_model_xgboost.png")
-    # xgb = XGBClassifier(n_estimators=50, max_depth=2)
-    # xgb.fit(train_x, train_y, eval_metric='error', eval_set=eval_set)
-    # pred_y = xgb.predict(test_x)
-
-    # for i in range(len(pred_y)):
-    #     if pred_y[i] >= 0.5:
-    #         pred_y[i] = 1
-    #     else:
-    #         pred_y[i] = 0
 
 rdm_forest(train_x, train_y, eval_set, test_x, test_y)
 xgb_boost(train_x, train_y, eval_set, test_x, test_y)
